@@ -149,21 +149,6 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     });
   }
 
-// // This function will remove a zero which was appended due to decimal insertion
-//   num setDemicalAccordingly(num number, num numberToConcatenate) {
-//     num toReturn = number;
-
-//     if (number.toString().contains(".")) {
-//       // shows decimalNumber
-//       toReturn = num.parse('$number$numberToConcatenate');
-//       String numberString = toReturn.toString();
-//       numberString = numberString.replaceAll(".0", ".");
-//       toReturn = num.parse(numberString);
-//     } else {
-//       toReturn = num.parse('$number$numberToConcatenate');
-//     }
-//     return toReturn;
-//   }
 
 // This function is responsible for appending operator or number accordingly
   void onOperatorTapped(String operator) {
