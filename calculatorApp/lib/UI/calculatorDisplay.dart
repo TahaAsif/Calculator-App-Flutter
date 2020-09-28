@@ -10,9 +10,9 @@ class CalculatorDisplay extends StatefulWidget {
 }
 
 class _CalculatorDisplayState extends State<CalculatorDisplay> {
-  num _output;
-  num firstNumber;
-  num secondNumber;
+  String _output;
+  String firstNumber;
+  String secondNumber;
   String operator;
   Color buttonColor = Colors.black;
   Color numberButtonColor = Colors.white;
@@ -20,7 +20,6 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
   @override
   Widget build(BuildContext context) {
-
     //Below colors are always fixed
     Color operatorButtonColor = Colors.orange;
     Color specialButtonColor = Colors.grey;
@@ -55,11 +54,11 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
           ),
           Row(
             children: [
-              getCalculatorButton("7", () => {onNumberTapped(7)}, buttonColor,
+              getCalculatorButton("7", () => {onNumberTapped("7")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("8", () => {onNumberTapped(8)}, buttonColor,
+              getCalculatorButton("8", () => {onNumberTapped("8")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("9", () => {onNumberTapped(9)}, buttonColor,
+              getCalculatorButton("9", () => {onNumberTapped("9")}, buttonColor,
                   numberButtonColor, 80, 80),
               getCalculatorButton("x", () => {onOperatorTapped("x")},
                   buttonColor, operatorButtonColor, 80, 80)
@@ -67,11 +66,11 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
           ),
           Row(
             children: [
-              getCalculatorButton("4", () => {onNumberTapped(4)}, buttonColor,
+              getCalculatorButton("4", () => {onNumberTapped("4")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("5", () => {onNumberTapped(5)}, buttonColor,
+              getCalculatorButton("5", () => {onNumberTapped("5")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("6", () => {onNumberTapped(6)}, buttonColor,
+              getCalculatorButton("6", () => {onNumberTapped("6")}, buttonColor,
                   numberButtonColor, 80, 80),
               getCalculatorButton("-", () => {onOperatorTapped("-")},
                   buttonColor, operatorButtonColor, 80, 80)
@@ -79,11 +78,11 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
           ),
           Row(
             children: [
-              getCalculatorButton("1", () => {onNumberTapped(1)}, buttonColor,
+              getCalculatorButton("1", () => {onNumberTapped("1")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("2", () => {onNumberTapped(2)}, buttonColor,
+              getCalculatorButton("2", () => {onNumberTapped("2")}, buttonColor,
                   numberButtonColor, 80, 80),
-              getCalculatorButton("3", () => {onNumberTapped(3)}, buttonColor,
+              getCalculatorButton("3", () => {onNumberTapped("3")}, buttonColor,
                   numberButtonColor, 80, 80),
               getCalculatorButton("+", () => {onOperatorTapped("+")},
                   buttonColor, operatorButtonColor, 80, 80)
@@ -91,7 +90,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
           ),
           Row(
             children: [
-              getCalculatorButton("0", () => {onNumberTapped(0)}, buttonColor,
+              getCalculatorButton("0", () => {onNumberTapped("0")}, buttonColor,
                   numberButtonColor, 170, 80),
               getCalculatorButton(".", () => {onOperatorTapped(".")},
                   buttonColor, numberButtonColor, 80, 80),
@@ -117,9 +116,8 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
     }
   }
 
-
 // This function is responsible for setting number or if needed to append a number (multidigit number) then call proper setDemicalAccordingly
-  void onNumberTapped(num number) {
+  void onNumberTapped(String number) {
     setState(() {
       if (_output != null) {
         _output = null;
@@ -134,7 +132,7 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
 
       if (operator == null) {
         if (checkLength(firstNumber)) {
-          firstNumber = setDemicalAccordingly(firstNumber, number);
+          firstNumber = '$firstNumber$number';
         }
         return;
       }
@@ -145,27 +143,27 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
       }
 
       if (checkLength(secondNumber)) {
-        secondNumber = setDemicalAccordingly(secondNumber, number);
+        secondNumber = '$secondNumber$number';
         return;
       }
     });
   }
 
-// This function will remove a zero which was appended due to decimal insertion
-  num setDemicalAccordingly(num number, num numberToConcatenate) {
-    num toReturn = number;
+// // This function will remove a zero which was appended due to decimal insertion
+//   num setDemicalAccordingly(num number, num numberToConcatenate) {
+//     num toReturn = number;
 
-    if (number.toString().contains(".")) {
-      // shows decimalNumber
-      toReturn = num.parse('$number$numberToConcatenate');
-      String numberString = toReturn.toString();
-      numberString = numberString.replaceAll(".0", ".");
-      toReturn = num.parse(numberString);
-    } else {
-      toReturn = num.parse('$number$numberToConcatenate');
-    }
-    return toReturn;
-  }
+//     if (number.toString().contains(".")) {
+//       // shows decimalNumber
+//       toReturn = num.parse('$number$numberToConcatenate');
+//       String numberString = toReturn.toString();
+//       numberString = numberString.replaceAll(".0", ".");
+//       toReturn = num.parse(numberString);
+//     } else {
+//       toReturn = num.parse('$number$numberToConcatenate');
+//     }
+//     return toReturn;
+//   }
 
 // This function is responsible for appending operator or number accordingly
   void onOperatorTapped(String operator) {
@@ -174,17 +172,18 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
         firstNumber = _output;
         _output = null;
       } else if (firstNumber == null) {
-        firstNumber = 0;
+        firstNumber = '0';
       }
 
       if (operator == ".") {
         if (this.operator == null && !firstNumber.toString().contains(".")) {
-          firstNumber = num.parse('$firstNumber$operator');
-        } else if (secondNumber!=null && !secondNumber.toString().contains(".")) {
-          secondNumber = num.parse('$secondNumber$operator');
+          firstNumber = '$firstNumber$operator';
+        } else if (secondNumber != null &&
+            !secondNumber.toString().contains(".")) {
+          secondNumber = '$secondNumber$operator';
         }
       } else if (operator == "+/-") {
-        firstNumber = -(firstNumber);
+        firstNumber = (-(double.parse(firstNumber))).toString();
       } else {
         this.operator = operator;
       }
@@ -197,34 +196,34 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
       return;
     }
 
+    num firstValue = num.parse(firstNumber);
+    num secondValue = null;
+    if (secondNumber != null) {
+      secondValue = num.parse(secondNumber);
+    }
     setState(() {
       switch (operator) {
         case "+":
-          _output =
-              num.parse((firstNumber + secondNumber).toStringAsExponential(3));
+          _output = (firstValue + secondValue).toString();
           break;
         case '-':
-          _output =
-              num.parse((firstNumber - secondNumber).toStringAsExponential(3));
+          _output = (firstValue - secondValue).toString();
           break;
         case 'x':
-          _output =
-              num.parse((firstNumber * secondNumber).toStringAsExponential(3));
+          _output = (firstValue * secondValue).toString();
           break;
         case '%':
           if (secondNumber == null) {
-            _output = num.parse((firstNumber / 100).toStringAsExponential(3));
+            _output = (firstValue / 100).toString();
           } else {
-            _output = num.parse(
-                (firstNumber % secondNumber).toStringAsExponential(3));
+            _output = (firstValue % secondValue).toString();
           }
           break;
         case '/':
-          if (secondNumber == 0) {
+          if (secondValue == 0) {
             return;
           }
-          _output =
-              num.parse((firstNumber / secondNumber).toStringAsExponential(3));
+          _output = (firstValue / secondValue).toString();
           break;
       }
 
@@ -252,10 +251,10 @@ class _CalculatorDisplayState extends State<CalculatorDisplay> {
   }
 
 // This function is responsible to check length and not let number to extend certain length (length of 6)
-  bool checkLength(num number) {
+  bool checkLength(String number) {
     bool toReturn = false;
 
-    if (number.toString().length < 16) {
+    if (number.length < 16) {
       toReturn = true;
     }
 
